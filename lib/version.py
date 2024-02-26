@@ -4,7 +4,7 @@ class ARP_blender_version:
     _string = bpy.app.version_string
     blender_v = bpy.app.version
     _float = blender_v[0]*100+blender_v[1]+blender_v[2]*0.01
-    _char = bpy.app.version_string
+    #_char = bpy.app.version_string
 
 blender_version = ARP_blender_version()
 
