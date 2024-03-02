@@ -25,7 +25,9 @@ bl_info = {
     "blender": (4, 0, 0),
     "location": "3D View > Mixamo> Control Rig",
     "description": "Generate a control rig from the selected Mixamo Fbx skeleton",
-    "category": "Animation"
+    "category": "Animation",
+    "doc_url": "https://gitlab.com/x190/mixamo_blender4",
+    "tracker_url": "https://gitlab.com/x190/mixamo_blender4"
 }
 
 
