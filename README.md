@@ -10,3 +10,6 @@ This Is a Fork where I will maintain it to keep up to the latest blender version
 **Due to Time Constraints, I will NOT actively test this addon, and will only react to known problems, known API breaking Changes or bug report**
 
 Please Report Bugs if you found any, and I will try my best to resolve them
+
+To Report Bugs, Please Use Github Issues
+https://github.com/BlenderBoi/mixamo_blender/issues
