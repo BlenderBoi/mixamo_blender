@@ -8,3 +8,5 @@ This Is a Fork where I will maintain it to keep up to the latest blender version
 **I can Only do minimal support for this Addon where I will only Fix Known Incompatibilty Problems / Reported Problems**
 
 **Due to Time Constraints, I will NOT actively test this addon, and will only react to known problems, known API breaking Changes or bug report**
+
+Please Report Bugs if you found any, and I will try my best to resolve them
