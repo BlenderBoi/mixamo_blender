@@ -1,8 +1,7 @@
-import bpy, sys, linecache, ast
-import math
+import bpy
 from math import *
 from mathutils import *
-from bpy.types import Panel, UIList
+from bpy.types import Panel
 from .utils import *
 from .define import *
 
@@ -125,7 +124,7 @@ class MR_OT_make_rig(bpy.types.Operator):
     def poll(cls, context):
         if context.active_object:
             if context.active_object.type == "ARMATURE":
-                if not "mr_control_rig" in context.active_object.data.keys():
+                if "mr_control_rig" not in context.active_object.data.keys():
                     return True
         return False
 
@@ -158,7 +157,7 @@ class MR_OT_make_rig(bpy.types.Operator):
 
             # animation import: initial steps
             if self.bake_anim:
-                if not "mr_control_rig" in arm.data.keys():# only if the control rig is not already built
+                if "mr_control_rig" not in arm.data.keys():# only if the control rig is not already built
                     # duplicate current skeleton
                     duplicate_object()
                     copy_name = arm.name+"_TEMPANIM"
@@ -184,7 +183,7 @@ class MR_OT_make_rig(bpy.types.Operator):
             # animation import: retarget
             if self.bake_anim and self.animated_armature:
                 _import_anim(self.animated_armature, arm)
-
+                arm.animation_data.action_slot = arm.animation_data.action_suitable_slots[0]
             # set KeyingSet
             ks = context.scene.keying_sets_all
             try:
@@ -1435,7 +1434,7 @@ def _make_rig(self):
         thigh_pb = get_pose_bone(thigh_name)
 
         # IK-FK switch property
-        if not "ik_fk_switch" in c_foot_ik_pb.keys():
+        if "ik_fk_switch" not in c_foot_ik_pb.keys():
             create_custom_prop(node=c_foot_ik_pb, prop_name="ik_fk_switch", prop_val=0.0, prop_min=0.0, prop_max=1.0, prop_description="IK-FK switch value")
 
         c_foot_ik_pb["ik_fk_switch"] = 0.0 if self.ik_legs else 1.0
@@ -1924,7 +1923,7 @@ def _make_rig(self):
 
 
        # IK-FK switch property
-        if not "ik_fk_switch" in c_hand_ik_pb.keys():
+        if "ik_fk_switch" not in c_hand_ik_pb.keys():
             create_custom_prop(node=c_hand_ik_pb, prop_name="ik_fk_switch", prop_val=0.0, prop_min=0.0, prop_max=1.0, prop_description="IK-FK switch value")
 
         c_hand_ik_pb["ik_fk_switch"] = 0.0 if self.ik_arms else 1.0
@@ -2431,6 +2430,7 @@ def _import_anim(src_arm, tar_arm, import_only=False):
 
     # Get anim data
     action = src_arm.animation_data.action
+
     fr_start = int(action.frame_range[0])
     fr_end = int(action.frame_range[1])
 
@@ -2565,7 +2565,7 @@ def _import_anim(src_arm, tar_arm, import_only=False):
                 else:
                     tar_bone.matrix = src_bone.matrix.copy()
 
-                if not "Hips" in src_name:
+                if "Hips" not in src_name:
                     tar_bone.location = [0,0,0]
 
                 bpy.context.view_layer.update()# Not ideal, slow performances
