@@ -183,7 +183,10 @@ class MR_OT_make_rig(bpy.types.Operator):
             # animation import: retarget
             if self.bake_anim and self.animated_armature:
                 _import_anim(self.animated_armature, arm)
-                arm.animation_data.action_slot = arm.animation_data.action_suitable_slots[0]
+
+                print(blender_version._float)
+                if blender_version._float >= 404:
+                    arm.animation_data.action_slot = arm.animation_data.action_suitable_slots[0]
             # set KeyingSet
             ks = context.scene.keying_sets_all
             try:

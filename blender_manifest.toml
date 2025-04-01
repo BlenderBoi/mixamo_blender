@@ -1,7 +1,7 @@
 
 schema_version = "1.0.0"
 id = "mixamo"
-version = "1.1.0"
+version = "1.1.1"
 name = "Mixamo Rig for Blender"
 tagline = "Generate a control rig from the selected Mixamo Fbx skeleton"
 maintainer = "Mixamo, Xin, TinkerBoi <support@tinkerboi.com>"
@@ -9,7 +9,7 @@ type = "add-on"
 
 website = "https://blendermarket.com/creators/tinkerboi"
 tags = ["Rigging"]
-blender_version_min = "4.4.0"
+blender_version_min = "4.0.0"
 # blender_version_max = "4.2.0"
 
 # License conforming to https://spdx.org/licenses/ (use "SPDX: prefix)

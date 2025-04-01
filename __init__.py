@@ -19,15 +19,15 @@
 
 
 bl_info = {
-    "name": "Mixamo Rig for Blender 4.0",
-    "author": "Mixamo - Xin",
-    "version": (1, 0, 0),
+    "name": "Mixamo Rig for Blender",
+    "author": "Mixamo, Xin, TinkerBoi",
+    "version": (1, 1, 1),
     "blender": (4, 0, 0),
     "location": "3D View > Mixamo> Control Rig",
     "description": "Generate a control rig from the selected Mixamo Fbx skeleton",
     "category": "Animation",
-    "doc_url": "https://gitlab.com/x190/mixamo_blender4",
-    "tracker_url": "https://gitlab.com/x190/mixamo_blender4"
+    "doc_url": "https://github.com/BlenderBoi/mixamo_blender",
+    "tracker_url": "https://github.com/BlenderBoi/mixamo_blender"
 }
 
 
