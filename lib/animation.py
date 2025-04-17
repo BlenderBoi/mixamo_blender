@@ -91,12 +91,12 @@ def bake_anim(frame_start=0, frame_end=10, only_selected=False, bake_bones=True,
         keyframes[fc_key].extend((fra, val))
 
 
-    # set transforms and store keyframes       
+    # set transforms and store keyframes
     if bake_bones:
-        for pb in armature.pose.bones:        
+        for pb in armature.pose.bones:
             if only_selected and not pb.bone.select:
                 continue
-            
+
             euler_prev = None
             quat_prev = None
             keyframes = {}
@@ -108,7 +108,7 @@ def bake_anim(frame_start=0, frame_end=10, only_selected=False, bake_bones=True,
                     store_keyframe(pb.name, "location", arr_idx, f, value)
 
                 rotation_mode = pb.rotation_mode
-                
+
                 if rotation_mode == 'QUATERNION':
                     if quat_prev is not None:
                         quat = pb.rotation_quaternion.copy()
@@ -138,29 +138,36 @@ def bake_anim(frame_start=0, frame_end=10, only_selected=False, bake_bones=True,
 
                     for arr_idx, value in enumerate(pb.rotation_euler):
                         store_keyframe(pb.name, "rotation_euler", arr_idx, f, value)
-                    
+
                 for arr_idx, value in enumerate(pb.scale):
                     store_keyframe(pb.name, "scale", arr_idx, f, value)
-                    
-            
+
+
             # Add keyframes
             for fc_key, key_values in keyframes.items():
                 data_path, index = fc_key
-                fcurve = action.fcurves.find(data_path=data_path, index=index)
+                if blender_version._float <= 403:
+                    fcurve = action.fcurves.find(data_path=data_path, index=index)
+                else:
+                    fcurve = action.fcurve_ensure_for_datablock(
+                        armature,  # Target data-block
+                        data_path,
+                        index=index
+                    )
                 if fcurve == None:
                     fcurve = action.fcurves.new(data_path, index=index, action_group=pb.name)
 
                 num_keys = len(key_values) // 2
                 fcurve.keyframe_points.add(num_keys)
                 fcurve.keyframe_points.foreach_set('co', key_values)
-                
+
                 if blender_version._float >= 290:# internal error when doing so with Blender 2.83, only for Blender 2.90 and higher
                     linear_enum_value = bpy.types.Keyframe.bl_rna.properties['interpolation'].enum_items['LINEAR'].value
                     fcurve.keyframe_points.foreach_set('interpolation', (linear_enum_value,) * num_keys)
                 else:
                     for kf in fcurve.keyframe_points:
                         kf.interpolation = 'LINEAR'
-                
+
 
     if bake_object:
         euler_prev = None
