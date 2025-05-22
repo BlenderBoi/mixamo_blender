@@ -307,6 +307,10 @@ class MR_OT_import_anim(bpy.types.Operator):
 
             _import_anim(src_arm, tar_arm, import_only=True)
 
+            if blender_version._float >= 404:
+                tar_arm.animation_data.action_slot = tar_arm.animation_data.action_suitable_slots[0]
+
+
         #except:
         #    error = True
         #    print("Error")
@@ -2433,6 +2437,7 @@ def _import_anim(src_arm, tar_arm, import_only=False):
 
     # Get anim data
     action = src_arm.animation_data.action
+    # src_arm.animation_data.action_slot
 
     fr_start = int(action.frame_range[0])
     fr_end = int(action.frame_range[1])

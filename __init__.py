@@ -21,7 +21,7 @@
 bl_info = {
     "name": "Mixamo Rig for Blender",
     "author": "Mixamo, Xin, TinkerBoi",
-    "version": (1, 1, 1),
+    "version": (1, 1, 2),
     "blender": (4, 0, 0),
     "location": "3D View > Mixamo> Control Rig",
     "description": "Generate a control rig from the selected Mixamo Fbx skeleton",
