@@ -9,7 +9,7 @@ type = "add-on"
 
 website = "https://blendermarket.com/creators/tinkerboi"
 tags = ["Rigging"]
-blender_version_min = "4.0.0"
+blender_version_min = "5.0.0"
 # blender_version_max = "4.2.0"
 
 # License conforming to https://spdx.org/licenses/ (use "SPDX: prefix)

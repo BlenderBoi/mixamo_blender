@@ -4,6 +4,7 @@ from mathutils import *
 from bpy.types import Panel
 from .utils import *
 from .define import *
+import bpy_extras
 
 
 # OPERATOR CLASSES
@@ -2085,8 +2086,9 @@ def _zero_out():
             action = arm.animation_data.action
 
     if action:
-        while len(action.fcurves):
-            action.fcurves.remove(action.fcurves[0])
+        for channelbag in action.layers[0].strips[0].channelbags:
+            while len(channelbag.fcurves):
+                channelbag.fcurves.remove(channelbag.fcurves[0])
 
     print("  Clear pose")
     # Reset pose
@@ -2303,7 +2305,11 @@ def _import_anim(src_arm, tar_arm, import_only=False):
         print("  No action found on the source armature")
         return
 
-    if len(src_arm.animation_data.action.fcurves) == 0:
+    fcurve_count = 0
+    for channelbag in src_arm.animation_data.action.layers[0].strips[0].channelbags:
+        fcurve_count += len(channelbag.fcurves)
+
+    if len(fcurve_count) == 0:
         print("  No keyframes to import")
         return
 
@@ -2437,6 +2443,7 @@ def _import_anim(src_arm, tar_arm, import_only=False):
 
     # Get anim data
     action = src_arm.animation_data.action
+    action_slot = src_arm.animation_data.action_slot
     # src_arm.animation_data.action_slot
 
     fr_start = int(action.frame_range[0])
@@ -2488,11 +2495,13 @@ def _import_anim(src_arm, tar_arm, import_only=False):
 
     scale_fac = src_arm.scale[0]
     bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
-    for fc in action.fcurves:
-        dp = fc.data_path
-        if dp.startswith('pose.bones') and dp.endswith(".location"):
-            for k in fc.keyframe_points:
-                k.co[1] *= scale_fac
+
+    for channelbag in action.layers[0].strips[0].channelbags:
+        for fc in channelbag.fcurves:
+            dp = fc.data_path
+            if dp.startswith('pose.bones') and dp.endswith(".location"):
+                for k in fc.keyframe_points:
+                    k.co[1] *= scale_fac
 
 
     bpy.ops.object.mode_set(mode='EDIT')
