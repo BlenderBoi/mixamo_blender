@@ -2155,7 +2155,7 @@ def _bake_anim(self):
     for pbone in rig.pose.bones:
         if "mixamo_ctrl" in pbone.bone.keys():
             rig.data.bones.active = pbone.bone
-            pbone.bone.select = True
+            pbone.select = True
             found_ctrl = True
 
     if not found_ctrl:# backward compatibility, use layer 0 instead
@@ -2166,7 +2166,7 @@ def _bake_anim(self):
                 pb = rig.pose.bones.get(b.name)
                 if pb is not None:
                     rig.data.bones.active = pb.bone
-                    pb.bone.select = True
+                    pb.select = True
 
         # ~ for pbone in rig.pose.bones:
             # ~ if pbone.bone.layers[0]:
@@ -2309,7 +2309,7 @@ def _import_anim(src_arm, tar_arm, import_only=False):
     for channelbag in src_arm.animation_data.action.layers[0].strips[0].channelbags:
         fcurve_count += len(channelbag.fcurves)
 
-    if len(fcurve_count) == 0:
+    if fcurve_count == 0:
         print("  No keyframes to import")
         return
 
@@ -2644,12 +2644,12 @@ def _import_anim(src_arm, tar_arm, import_only=False):
 
                 ik_pole_ctrl = get_pose_bone(ik_pole_name)
                 tar_arm.data.bones.active = ik_pole_ctrl.bone
-                ik_pole_ctrl.bone.select = True
+                ik_pole_ctrl.select = True
 
 
             # select
             tar_arm.data.bones.active = tar_bone.bone
-            tar_bone.bone.select = True
+            tar_bone.select = True
 
         bpy.context.view_layer.update()
 

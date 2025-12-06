@@ -12,7 +12,7 @@ def bake_anim(frame_start=0, frame_end=10, only_selected=False, bake_bones=True,
     def get_bones_matrix():
         matrix = {}        
         for pbone in armature.pose.bones:            
-            if only_selected and not pbone.bone.select:                
+            if only_selected and not pbone.select:                
                 continue
             
             bmat = pbone.matrix           
@@ -94,7 +94,7 @@ def bake_anim(frame_start=0, frame_end=10, only_selected=False, bake_bones=True,
     # set transforms and store keyframes
     if bake_bones:
         for pb in armature.pose.bones:
-            if only_selected and not pb.bone.select:
+            if only_selected and not pb.select:
                 continue
 
             euler_prev = None
@@ -146,31 +146,35 @@ def bake_anim(frame_start=0, frame_end=10, only_selected=False, bake_bones=True,
             # Add keyframes
 
 
-            for channelbag in action.layers[0].strips[0].channelbags:
 
-                for fc_key, key_values in keyframes.items():
-                    data_path, index = fc_key
-                    if blender_version._float <= 403:
-                        fcurve = channelbag.fcurves.find(data_path=data_path, index=index)
-                    else:
-                        fcurve = action.fcurve_ensure_for_datablock(
-                            armature,  # Target data-block
-                            data_path,
-                            index=index
-                        )
-                    if fcurve == None:
-                        fcurve = channelbag.fcurves.new(data_path, index=index, action_group=pb.name)
+            for fc_key, key_values in keyframes.items():
+                data_path, index = fc_key
 
-                    num_keys = len(key_values) // 2
-                    fcurve.keyframe_points.add(num_keys)
-                    fcurve.keyframe_points.foreach_set('co', key_values)
 
-                    if blender_version._float >= 290:# internal error when doing so with Blender 2.83, only for Blender 2.90 and higher
-                        linear_enum_value = bpy.types.Keyframe.bl_rna.properties['interpolation'].enum_items['LINEAR'].value
-                        fcurve.keyframe_points.foreach_set('interpolation', (linear_enum_value,) * num_keys)
-                    else:
-                        for kf in fcurve.keyframe_points:
-                            kf.interpolation = 'LINEAR'
+                fcurve = action.fcurve_ensure_for_datablock(
+                    armature,  # Target data-block
+                    data_path,
+                    index=index
+                )
+
+                # for channelbag in action.layers[0].strips[0].channelbags:
+                #     if fcurve == None:
+                #         fcurve = channelbag.fcurves.new(data_path, index=index, action_group=pb.name)
+
+                num_keys = len(key_values) // 2
+                fcurve.keyframe_points.add(num_keys)
+                fcurve.keyframe_points.foreach_set('co', key_values)
+
+
+                linear_enum_value = bpy.types.Keyframe.bl_rna.properties['interpolation'].enum_items['LINEAR'].value
+                fcurve.keyframe_points.foreach_set('interpolation', (linear_enum_value,) * num_keys)
+
+                # if blender_version._float >= 290:# internal error when doing so with Blender 2.83, only for Blender 2.90 and higher
+                    # linear_enum_value = bpy.types.Keyframe.bl_rna.properties['interpolation'].enum_items['LINEAR'].value
+                    # fcurve.keyframe_points.foreach_set('interpolation', (linear_enum_value,) * num_keys)
+                # else:
+                #     for kf in fcurve.keyframe_points:
+                #         kf.interpolation = 'LINEAR'
 
 
     if bake_object:
